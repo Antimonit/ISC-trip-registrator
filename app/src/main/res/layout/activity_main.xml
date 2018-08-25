@@ -1,0 +1,60 @@
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:paddingTop="@dimen/activity_vertical_margin"
+		tools:context="cz.cvut.isctripregistrator.MainActivity">
+
+		<TextView
+			style="@style/Caption"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/caption_student_data"/>
+
+		<TableLayout
+			android:id="@+id/table_student_data"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingBottom="@dimen/table_vertical_margin"
+			android:paddingLeft="@dimen/table_horizontal_margin"
+			android:paddingRight="@dimen/table_horizontal_margin"
+			android:paddingTop="@dimen/table_vertical_margin"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<TextView
+				style="@style/Caption"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/caption_trips"/>
+
+			<ImageButton
+				android:id="@+id/refresh_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@drawable/refresh_button"
+				android:contentDescription="@string/refresh"/>
+		</LinearLayout>
+
+		<TableLayout
+			android:id="@+id/table_trips"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingBottom="@dimen/table_vertical_margin"
+			android:paddingLeft="@dimen/table_horizontal_margin"
+			android:paddingRight="@dimen/table_horizontal_margin"
+			android:paddingTop="@dimen/table_vertical_margin"/>
+	</LinearLayout>
+</ScrollView>
