@@ -1,4 +1,4 @@
-package cz.cvut.isctripregistrator
+package cz.cvut.isc.tripregistrator.screen.main
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -8,14 +8,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cz.cvut.isctripregistrator.model.Trip
+import cz.cvut.isc.tripregistrator.R
+import cz.cvut.isc.tripregistrator.model.Trip
 import kotlinx.android.synthetic.main.trip_card.view.*
 import java.text.SimpleDateFormat
 
 /**
  * @author David Khol
  * @since 26.08.2018
- **/
+ */
 class TripsAdapter(
 		private val registerTrip: (Trip) -> Unit,
 		private val unregisterTrip: (Trip) -> Unit
@@ -73,6 +74,7 @@ class TripsAdapter(
 					trip.participants,
 					trip.capacity ?: context.getString(R.string.unlimited)
 			)
+			view.progress.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
 			view.btn_register.apply {
 				visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
 				text = context.getString(when {

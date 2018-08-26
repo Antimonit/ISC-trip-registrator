@@ -1,4 +1,4 @@
-package cz.cvut.isctripregistrator
+package cz.cvut.isc.tripregistrator.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,12 +8,14 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.widget.CheckBox
+import cz.cvut.isc.tripregistrator.PreferenceInteractor
+import cz.cvut.isc.tripregistrator.R
 import kotlinx.android.synthetic.main.settings_dialog.view.*
 
 /**
  * @author David Khol
  * @since 26.08.2018
- **/
+ */
 class SettingsDialog : DialogFragment() {
 
 	private lateinit var preferences: PreferenceInteractor
@@ -45,7 +47,7 @@ class SettingsDialog : DialogFragment() {
 				}
 			}
 			setView(view)
-			setPositiveButton(android.R.string.ok) { dialog, which ->
+			setPositiveButton(android.R.string.ok) { _, _ ->
 				val newUrl = view.settings_dialog_url.text.toString()
 				val newUsername = view.settings_dialog_username.text.toString()
 				val newPassword = view.settings_dialog_password.text.toString()

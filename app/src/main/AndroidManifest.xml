@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-	package="cz.cvut.isctripregistrator"
+	package="cz.cvut.isc.tripregistrator"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.CAMERA" />
 
 	<application
-		android:name=".App"
+		android:name="cz.cvut.isc.tripregistrator.App"
 		android:allowBackup="true"
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
@@ -19,7 +19,7 @@
 			/>
 
 		<activity
-			android:name=".MainActivity"
+			android:name="cz.cvut.isc.tripregistrator.screen.main.MainActivity"
 			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
@@ -27,7 +27,7 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".ScannerActivity"/>
+		<activity android:name="cz.cvut.isc.tripregistrator.screen.scan.ScannerActivity"/>
 
 	</application>
 

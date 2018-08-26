@@ -1,4 +1,4 @@
-package cz.cvut.isctripregistrator
+package cz.cvut.isc.tripregistrator.screen.main
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -11,10 +11,16 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import cz.cvut.isc.tripregistrator.PreferenceInteractor
+import cz.cvut.isc.tripregistrator.R
 
-import cz.cvut.isctripregistrator.api.ApiInteractor
-import cz.cvut.isctripregistrator.model.Student
-import cz.cvut.isctripregistrator.model.Trip
+import cz.cvut.isc.tripregistrator.api.ApiInteractor
+import cz.cvut.isc.tripregistrator.dialog.ConfirmationDialog
+import cz.cvut.isc.tripregistrator.dialog.SettingsDialog
+import cz.cvut.isc.tripregistrator.model.Student
+import cz.cvut.isc.tripregistrator.model.Trip
+import cz.cvut.isc.tripregistrator.screen.scan.ScannerActivity
+import cz.cvut.isc.tripregistrator.utils.SpacingDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
