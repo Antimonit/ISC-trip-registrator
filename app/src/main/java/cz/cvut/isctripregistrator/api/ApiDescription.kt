@@ -10,11 +10,30 @@ interface ApiDescription {
 
 	@FormUrlEncoded
 	@POST("query.php")
-	fun getStudent(
+	fun load(
 			@Field("username") username: String,
 			@Field("password") password: String,
 			@Field("action") action: String,
 			@Field("card_number") cardNumber: String
+	): Single<Response>
+
+	@FormUrlEncoded
+	@POST("query.php")
+	fun register(
+			@Field("username") username: String,
+			@Field("password") password: String,
+			@Field("action") action: String,
+			@Field("user_id") userId: String,
+			@Field("trip_id") tripId: String
+	): Single<Response>
+
+	@FormUrlEncoded
+	@POST("query.php")
+	fun refresh(
+			@Field("username") username: String,
+			@Field("password") password: String,
+			@Field("action") action: String,
+			@Field("user_id") userId: String
 	): Single<Response>
 
 }

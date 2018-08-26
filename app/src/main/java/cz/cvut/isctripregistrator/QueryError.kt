@@ -2,8 +2,6 @@ package cz.cvut.isctripregistrator
 
 import java.util.HashMap
 
-import com.example.isctripregistrator.R
-
 enum class QueryError(
 		val type: String,
 		val messageResourceId: Int

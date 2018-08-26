@@ -6,6 +6,6 @@ package cz.cvut.isctripregistrator.model
  */
 data class Response(
 		val status: String,
-		val data: Student,
+		val user: Student?,
 		val trips: List<Trip>
 )

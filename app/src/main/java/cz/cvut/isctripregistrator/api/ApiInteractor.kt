@@ -48,7 +48,19 @@ object ApiInteractor {
 	}
 
 	fun load(username: String, password: String, esnNumber: String): Single<Response> {
-		return service.getStudent(username, password, "load", esnNumber)
+		return service.load(username, password, "load", esnNumber)
+	}
+
+	fun register(username: String, password: String, userId: String, tripId: String): Single<Response> {
+		return service.register(username, password, "register", userId, tripId)
+	}
+
+	fun unregister(username: String, password: String, userId: String, tripId: String): Single<Response> {
+		return service.register(username, password, "unregister", userId, tripId)
+	}
+
+	fun refresh(username: String, password: String, userId: String): Single<Response> {
+		return service.refresh(username, password, "refresh", userId)
 	}
 
 }

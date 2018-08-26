@@ -4,7 +4,6 @@ import java.util.Date
 
 import org.apache.http.impl.cookie.DateUtils
 import org.json.JSONException
-import org.json.JSONObject
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -34,7 +33,6 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 
-import com.example.isctripregistrator.R
 import com.google.zxing.integration.android.IntentIntegrator
 import cz.cvut.isctripregistrator.api.ApiInteractor
 import cz.cvut.isctripregistrator.model.Student
@@ -66,8 +64,6 @@ class MainActivity : AppCompatActivity() {
 		val FACULTY_KEY = "FACULTY"
 
 		val STATUS_JSON_KEY = "status"
-		val DATA_JSON_KEY = "data"
-		val TRIPS_JSON_KEY = "trips"
 		val TYPE_JSON_KEY = "type"
 
 		val STATUS_JSON_VALUE_SUCCESS = "success"
@@ -81,7 +77,6 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var preferences: PreferenceInteractor
 
 	private var queryDialog: ProgressDialog? = null
-	private var queryTask: QueryTask? = null
 
 	private var cardNumber: String? = null
 	private var userId: String? = null
@@ -279,12 +274,8 @@ class MainActivity : AppCompatActivity() {
 			setCancelable(true)
 			setCanceledOnTouchOutside(false)
 			setOnCancelListener {
-				if (queryTask != null) {
-					queryTask!!.cancel(true)
-					queryTask = null
-					queryDialog = null
-					setCard(null)
-				}
+				queryDialog = null
+				setCard(null)
 			}
 			setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel)) { dialog, which ->
 				dialog.cancel()
@@ -302,15 +293,13 @@ class MainActivity : AppCompatActivity() {
 					Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
 					if (cardNumber == queryCardNumber && queryDialog != null) {
 						queryDialog!!.dismiss()
-						queryTask = null
 						queryDialog = null
 
-						populateData(result.data)
+						populateUser(result.user)
 						populateTrips(result.trips)
 						refreshButton.visibility = View.VISIBLE
 					}
 				}, { t ->
-//					showError(param.getString(TYPE_JSON_KEY))
 					t.printStackTrace()
 					performActionClear()
 					Toast.makeText(this@MainActivity, "Fail", Toast.LENGTH_SHORT).show()
@@ -347,12 +336,8 @@ class MainActivity : AppCompatActivity() {
 			setCancelable(true)
 			setCanceledOnTouchOutside(false)
 			setOnCancelListener {
-				if (queryTask != null) {
-					queryTask!!.cancel(true)
-					queryTask = null
-					queryDialog = null
-					setTrip(null)
-				}
+				queryDialog = null
+				setTrip(null)
 			}
 			setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel)) { dialog, which ->
 				dialog.cancel()
@@ -360,34 +345,38 @@ class MainActivity : AppCompatActivity() {
 			show()
 		}
 
-		// Set up query task
-		queryTask = QueryTask(preferences.url,
-				Function { param ->
+		if (register) {
+			ApiInteractor.register(
+					preferences.username,
+					preferences.password,
+					userId!!,
+					queryTripId
+			)
+		} else {
+			ApiInteractor.unregister(
+					preferences.username,
+					preferences.password,
+					userId!!,
+					queryTripId
+			)
+		}
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe({ result ->
+					Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
 					if (tripId === queryTripId && queryDialog != null) {
 						queryDialog!!.dismiss()
-						queryTask = null
 						queryDialog = null
 						setTrip(null)
 
-//						try {
-//							if (param.getString(STATUS_JSON_KEY) == STATUS_JSON_VALUE_SUCCESS) {
-//								populateTrips(param)
-//							} else {
-//								showError(param.getString(TYPE_JSON_KEY))
-//							}
-//						} catch (e: JSONException) {
-//							e.printStackTrace()
-//						}
-
+						populateUser(result.user)
+						populateTrips(result.trips)
 					}
+				}, { t ->
+					t.printStackTrace()
+					performActionClear()
+					Toast.makeText(this@MainActivity, "Fail", Toast.LENGTH_SHORT).show()
 				})
-		queryTask!!.execute(
-				QUERY_USERNAME, preferences.username,
-				QUERY_PASSWORD, preferences.password,
-				QUERY_ACTION, if (register) QUERY_ACTION_REGISTER else QUERY_ACTION_UNREGISTER,
-				QUERY_USER_ID, userId,
-				QUERY_TRIP_ID, queryTripId
-		)
 	}
 
 	private fun refreshTrips() {
@@ -402,11 +391,7 @@ class MainActivity : AppCompatActivity() {
 			setCancelable(true)
 			setCanceledOnTouchOutside(false)
 			setOnCancelListener {
-				if (queryTask != null) {
-					queryTask!!.cancel(true)
-					queryTask = null
-					queryDialog = null
-				}
+				queryDialog = null
 			}
 			setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel)) { dialog, which ->
 				dialog.cancel()
@@ -414,34 +399,33 @@ class MainActivity : AppCompatActivity() {
 			show()
 		}
 
-		// Set up query task
-		queryTask = QueryTask(preferences.url,
-				Function<JSONObject> { param ->
+		ApiInteractor.refresh(
+				preferences.username,
+				preferences.password,
+				userId!!
+		)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe({ result ->
+					Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
 					if (queryDialog != null) {
 						queryDialog!!.dismiss()
-						queryTask = null
 						queryDialog = null
 
-//						try {
-//							if (param.getString(STATUS_JSON_KEY) == STATUS_JSON_VALUE_SUCCESS) {
-//								populateTrips(param)
-//							} else {
-//								showError(param.getString(TYPE_JSON_KEY))
-//							}
-//						} catch (e: JSONException) {
-//							e.printStackTrace()
-//						}
+						populateUser(result.user)
+						populateTrips(result.trips)
 					}
+				}, { t ->
+					t.printStackTrace()
+					performActionClear()
+					Toast.makeText(this@MainActivity, "Fail", Toast.LENGTH_SHORT).show()
 				})
-		queryTask!!.execute(
-				QUERY_USERNAME, preferences.username,
-				QUERY_PASSWORD, preferences.password,
-				QUERY_ACTION, QUERY_ACTION_REFRESH,
-				QUERY_USER_ID, userId
-		)
 	}
 
-	private fun populateData(student: Student) {
+	private fun populateUser(student: Student?) {
+		if (student == null) {
+			return
+		}
 		studentDataFields[FIRST_NAME_KEY]!!.text = student.first_name
 		studentDataFields[LAST_NAME_KEY]!!.text = student.last_name
 		studentDataFields[CARD_NUMBER_KEY]!!.text = cardNumber
@@ -451,7 +435,6 @@ class MainActivity : AppCompatActivity() {
 		setUser(student.id_user, student.first_name, student.last_name)
 	}
 
-	@Throws(JSONException::class)
 	private fun populateTrips(trips: List<Trip>) {
 		tripsTable.removeAllViews()
 
@@ -548,8 +531,7 @@ class MainActivity : AppCompatActivity() {
 				return if (dateFromDateString == dateToDateString) {
 					"$dateFromDateString $dateFromTimeString-$dateToTimeString"
 				} else {
-					(dateFromDateString + " " + dateFromTimeString + " - " + dateToDateString
-							+ " " + dateToTimeString)
+					"$dateFromDateString $dateFromTimeString - $dateToDateString $dateToTimeString"
 				}
 			} else {
 				return "$dateFromDateString $dateFromTimeString"

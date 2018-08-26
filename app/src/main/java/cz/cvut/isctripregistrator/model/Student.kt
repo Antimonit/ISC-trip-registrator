@@ -1,6 +1,6 @@
 package cz.cvut.isctripregistrator.model
 
-import com.example.isctripregistrator.R
+import cz.cvut.isctripregistrator.R
 
 /**
  * @author David Khol
