@@ -17,9 +17,11 @@
     <string name="label_card_number">Card number</string>
     <string name="label_sex">Sex</string>
     <string name="label_faculty">Faculty</string>
+
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="unknown">Unknown</string>
+
     <string name="registered">Registered</string>
     <string name="not_registered">Not registered</string>
     <string name="full">Full</string>
@@ -54,4 +56,8 @@
     <string name="error_internal">Internal error</string>
     <string name="error_card">Card number not registered</string>
     <string name="error_connection">Internet connection error</string>
+
+	<string name="price_czk">%1$d Kč</string>
+	<string name="capacity">%1$d/%2$s</string>
+
 </resources>
