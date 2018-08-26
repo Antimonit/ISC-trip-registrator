@@ -1,7 +1,5 @@
 package cz.cvut.isctripregistrator
 
-import java.util.HashMap
-
 enum class QueryError(
 		val type: String,
 		val messageResourceId: Int
@@ -12,21 +10,4 @@ enum class QueryError(
 	ERR_CARD("CARD", R.string.error_card),
 	ERR_CONNECTION("CONNECTION", R.string.error_connection);
 
-
-	companion object {
-
-		private val typeMap: MutableMap<String, QueryError>
-
-		init {
-			typeMap = HashMap()
-			for (e in values()) {
-				typeMap[e.type] = e
-			}
-		}
-
-		fun getError(type: String): QueryError {
-			val error = typeMap[type]
-			return error ?: ERR_INTERNAL
-		}
-	}
 }

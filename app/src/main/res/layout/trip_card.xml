@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="8dp"
+	android:layout_marginRight="16dp"
+	android:layout_marginLeft="16dp"
+	app:cardCornerRadius="4dp"
+	>
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="16dp"
+		>
+
+		<TextView
+			android:id="@+id/txt_name"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:textColor="@android:color/black"
+			android:textSize="24sp"
+			app:layout_constraintEnd_toStartOf="@+id/btn_register"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:text="Český Krumlov"/>
+
+		<TextView
+			android:id="@+id/txt_time_to"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/roboto_condensed_regular"
+			android:textSize="12sp"
+			app:layout_constraintEnd_toEndOf="@+id/txt_date_to"
+			app:layout_constraintStart_toStartOf="@+id/txt_date_to"
+			app:layout_constraintTop_toBottomOf="@+id/txt_date_to"
+			tools:text="12:00"/>
+
+		<TextView
+			android:id="@+id/txt_time_from"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:fontFamily="@font/roboto_condensed_regular"
+			android:textSize="12sp"
+			app:layout_constraintEnd_toEndOf="@+id/txt_date_from"
+			app:layout_constraintStart_toStartOf="@+id/txt_date_from"
+			app:layout_constraintTop_toBottomOf="@+id/txt_date_from"
+			tools:text="12:00"/>
+
+		<TextView
+			android:id="@+id/txt_date_from"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:fontFamily="@font/roboto_condensed_regular"
+			android:textSize="16sp"
+			app:layout_constraintStart_toStartOf="@+id/txt_name"
+			app:layout_constraintTop_toBottomOf="@+id/txt_name"
+			tools:text="11 Dec"/>
+
+		<TextView
+			android:id="@+id/txt_date_to"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:layout_marginStart="16dp"
+			android:fontFamily="@font/roboto_condensed_regular"
+			android:textSize="16sp"
+			app:layout_constraintBaseline_toBaselineOf="@+id/txt_date_from"
+			app:layout_constraintStart_toEndOf="@+id/txt_date_from"
+			tools:text="12 Dec"/>
+
+		<TextView
+			android:id="@+id/txt_price"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="56dp"
+			android:textColor="@android:color/black"
+			android:textSize="20sp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="@+id/txt_name"
+			app:layout_constraintTop_toBottomOf="@+id/txt_name"
+			tools:text="1800 Kč"/>
+
+		<TextView
+			android:id="@+id/txt_capacity"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginStart="8dp"
+			app:layout_constraintEnd_toEndOf="@+id/btn_register"
+			app:layout_constraintStart_toStartOf="@+id/btn_register"
+			app:layout_constraintTop_toBottomOf="@+id/btn_register"
+			tools:text="17/50"/>
+
+		<Button
+			android:id="@+id/btn_register"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingLeft="16dp"
+			android:paddingRight="16dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:text="Register"/>
+
+	</android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
+

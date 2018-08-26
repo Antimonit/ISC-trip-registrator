@@ -1,12 +1,15 @@
 package cz.cvut.isctripregistrator.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 /**
  * @author David Khol
  * @since 25.08.2018
  */
+@Parcelize
 data class Trip(
 		@Json(name = "id_trip")
 		val id: String,
@@ -17,9 +20,9 @@ data class Trip(
 		@Json(name = "trip_organizers")
 		val organizers: String?,
 		@Json(name = "trip_date_from")
-		val date_from: Date?,
+		val dateFrom: Date?,
 		@Json(name = "trip_date_to")
-		val date_to: Date?,
+		val dateTo: Date?,
 		@Json(name = "trip_capacity")
 		val capacity: Int?,
 		@Json(name = "trip_price")
@@ -28,9 +31,16 @@ data class Trip(
 		val participants: Int,
 		@Json(name = "registered")
 		private val _registered: String
-) {
+) : Parcelable {
 
-	val registered: Boolean
+	val isRegistered: Boolean
 		get() = _registered == "y"
+
+	val isFull: Boolean
+		get() = if (capacity == null) {
+			false
+		} else {
+			capacity <= participants
+		}
 
 }

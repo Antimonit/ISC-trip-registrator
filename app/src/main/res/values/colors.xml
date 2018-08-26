@@ -1,11 +1,15 @@
 <resources>
-    <color name="holo_blue_light">#ff33b5e5</color>
-    <color name="trip_background">#4433b5e5</color>
+	<color name="accent">#8bc34a</color>
+
     <color name="button_registered">#66AA66</color>
     <color name="button_registered_pressed">#559955</color>
+
     <color name="button_not_registered">#00ffffff</color>
     <color name="button_not_registered_pressed">#11000000</color>
+
     <color name="button_full">#CC6666</color>
     <color name="button_full_pressed">#BB5555</color>
+
     <color name="button_border">#22000000</color>
+
 </resources>
