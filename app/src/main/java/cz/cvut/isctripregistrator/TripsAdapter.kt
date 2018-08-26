@@ -1,6 +1,9 @@
 package cz.cvut.isctripregistrator
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -77,11 +80,14 @@ class TripsAdapter(
 					trip.isFull -> R.string.full
 					else -> R.string.not_registered
 				})
-				setBackgroundResource(when {
-					trip.isRegistered -> R.drawable.button_registered
-					trip.isFull -> R.drawable.button_full
-					else -> R.drawable.button_not_registered
-				})
+
+				ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(ContextCompat.getColor(context,
+						when {
+							trip.isRegistered -> R.color.trip_registered
+							trip.isFull -> R.color.trip_full
+							else -> R.color.trip_not_registered
+						})))
+
 				setOnClickListener {
 					if (trip.isRegistered) {
 						unregisterTrip(trip)

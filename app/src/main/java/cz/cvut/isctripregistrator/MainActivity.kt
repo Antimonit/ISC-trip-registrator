@@ -38,9 +38,18 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
+		setSupportActionBar(toolbar)
+		supportActionBar?.apply {
+			setDisplayShowTitleEnabled(false)
+			setDisplayHomeAsUpEnabled(false)
+			setDisplayShowCustomEnabled(false)
+		}
+
 		preferences = PreferenceInteractor(this)
 
 		trips.adapter = tripsAdapter
+		trips.addItemDecoration(SpacingDecoration(resources.getDimension(R.dimen.word_list_spacing).toInt()))
+
 		trips_refresh.setOnRefreshListener {
 			refreshTrips()
 		}
@@ -75,7 +84,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		}
 	}
 
-	override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
+	override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
 		val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent)
 		if (result == null || result.contents == null) {
 			Toast.makeText(applicationContext, "No scan data received!", Toast.LENGTH_SHORT).show()

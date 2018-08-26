@@ -1,15 +1,9 @@
 <resources>
-	<color name="accent">#8bc34a</color>
+	<color name="colorPrimary">#3f528e</color>
+	<color name="colorPrimaryDark">#324171</color>
+	<color name="colorAccent">#e57373</color>
 
-    <color name="button_registered">#66AA66</color>
-    <color name="button_registered_pressed">#559955</color>
-
-    <color name="button_not_registered">#00ffffff</color>
-    <color name="button_not_registered_pressed">#11000000</color>
-
-    <color name="button_full">#CC6666</color>
-    <color name="button_full_pressed">#BB5555</color>
-
-    <color name="button_border">#22000000</color>
-
+    <color name="trip_registered">#66AA66</color>
+    <color name="trip_not_registered">#FFFFFF</color>
+    <color name="trip_full">#CC6666</color>
 </resources>

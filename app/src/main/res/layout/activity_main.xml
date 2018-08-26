@@ -8,7 +8,17 @@
 	android:orientation="vertical"
 	tools:context="cz.cvut.isctripregistrator.MainActivity">
 
-	<include layout="@layout/student_card"/>
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@android:color/white"
+		android:elevation="4dp"
+		>
+
+		<include layout="@layout/student_card"/>
+
+	</android.support.v7.widget.Toolbar>
 
 	<android.support.v4.widget.SwipeRefreshLayout
 		android:id="@+id/trips_refresh"
