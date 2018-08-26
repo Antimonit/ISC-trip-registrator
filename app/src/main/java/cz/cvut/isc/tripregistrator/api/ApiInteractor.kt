@@ -12,10 +12,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
+ * Sets up several networking libraries such as OkHttp, Moshi and Retrofit in order
+ * to build [ApiDescription] that is used to communicate with server.
+ *
  * @author David Khol
  * @since 25.08.2018
  */
-
 object ApiInteractor {
 
 	private val okHttpClient by lazy {
@@ -37,7 +39,7 @@ object ApiInteractor {
 	private val retrofit by lazy {
 		Retrofit.Builder()
 				.client(okHttpClient)
-				.baseUrl("http://192.168.0.200")
+				.baseUrl("http://192.168.0.200")	// TODO: Change the base url dynamically
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 				.addConverterFactory(MoshiConverterFactory.create(moshi))
 				.build()

@@ -6,6 +6,11 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
+/**
+ * Define server endpoints here.
+ * When provided to Retrofit it will create a concrete implementation of the interface that
+ * we can use to communicate with the server.
+ */
 interface ApiDescription {
 
 	@FormUrlEncoded

@@ -5,6 +5,11 @@ import com.squareup.moshi.*
 import java.text.SimpleDateFormat
 import java.util.Date
 
+
+/**
+ * Automatically parses and formats [Date] in format that is internally used
+ * by MySQL database.
+ */
 class DateAdapter {
 
 	companion object {

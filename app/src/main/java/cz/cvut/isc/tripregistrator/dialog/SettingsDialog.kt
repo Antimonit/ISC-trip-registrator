@@ -13,6 +13,8 @@ import cz.cvut.isc.tripregistrator.R
 import kotlinx.android.synthetic.main.settings_dialog.view.*
 
 /**
+ * Settings dialog in which user can change server url, username and password.
+ *
  * @author David Khol
  * @since 26.08.2018
  */

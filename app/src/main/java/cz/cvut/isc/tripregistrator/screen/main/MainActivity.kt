@@ -128,10 +128,8 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 	}
 
 	private fun performActionClear() {
-		this.student = null
-
-		tripsAdapter.trips = emptyList()
-		trips_refresh.isEnabled = false
+		updateUser(null)
+		updateTrips(emptyList())
 	}
 
 	private fun performActionSettings() {
@@ -236,17 +234,14 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 				})
 	}
 
-	private fun updateUser(student: Student?) {
-		if (student == null) {
-			return
-		}
-		this.student = student
+	private fun updateUser(user: Student?) {
+		student = user
 
-		txt_name.text = student.fullName
-		txt_esn_card_number.text = student.esnCardNumber
-		txt_faculty.text = student.faculty
+		txt_name.text = user?.fullName
+		txt_esn_card_number.text = user?.esnCardNumber
+		txt_faculty.text = user?.faculty
 
-		val resource = student.sex?.drawable
+		val resource = user?.sex?.drawable
 		val drawable = if (resource != null) { ContextCompat.getDrawable(this, resource) } else { null }
 		img_gender.setImageDrawable(drawable)
 	}
