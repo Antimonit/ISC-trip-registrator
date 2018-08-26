@@ -1,5 +1,6 @@
 package cz.cvut.isctripregistrator
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +8,10 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 
-import com.google.zxing.integration.android.IntentIntegrator
 import cz.cvut.isctripregistrator.api.ApiInteractor
 import cz.cvut.isctripregistrator.model.Student
 import cz.cvut.isctripregistrator.model.Trip
@@ -20,6 +21,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.student_card.*
 
 class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
+
+	companion object {
+		const val RC_SCANNER = 1
+	}
 
 	private lateinit var preferences: PreferenceInteractor
 
@@ -85,17 +90,18 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 	}
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-		val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent)
-		if (result == null || result.contents == null) {
-			Toast.makeText(applicationContext, "No scan data received!", Toast.LENGTH_SHORT).show()
-		} else {
-			loadCardNumber(result.contents)
+		if (requestCode == RC_SCANNER) {
+			if (resultCode == Activity.RESULT_OK) {
+				intent?.getStringExtra(ScannerActivity.KEY_CODE)?.let {
+					loadCardNumber(it)
+				}
+			}
 		}
 	}
 
+
 	private fun performActionScan() {
-		val scanIntegrator = IntentIntegrator(this)
-		scanIntegrator.initiateScan()
+		startActivityForResult(Intent(this, ScannerActivity::class.java), RC_SCANNER)
 	}
 
 	private fun performActionManualEntry() {
@@ -126,6 +132,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		SettingsDialog().show(supportFragmentManager, "settings")
 	}
 
+
 	private fun loadCardNumber(queryCardNumber: String) {
 		ApiInteractor.load(
 				preferences.username,
@@ -133,6 +140,12 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 				queryCardNumber
 		).subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
+				.doOnSubscribe {
+					progress.visibility = View.VISIBLE
+				}
+				.doFinally {
+					progress.visibility = View.GONE
+				}
 				.subscribe({ result ->
 					updateUser(result.user)
 					updateTrips(result.trips)
