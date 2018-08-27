@@ -6,4 +6,6 @@
     <color name="trip_registered">#66AA66</color>
     <color name="trip_not_registered">#FFFFFF</color>
     <color name="trip_full">#CC6666</color>
+
+	<color name="ic_launcher_background">#FFFFFF</color>
 </resources>

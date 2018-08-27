@@ -1,6 +1,7 @@
 package cz.cvut.isc.tripregistrator.api
 
 import cz.cvut.isc.tripregistrator.model.Response
+import cz.cvut.isc.tripregistrator.model.Trip
 import io.reactivex.Single
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -40,5 +41,21 @@ interface ApiDescription {
 			@Field("action") action: String,
 			@Field("user_id") userId: String
 	): Single<Response>
+
+	@FormUrlEncoded
+	@POST("query.php")
+	fun trips(
+			@Field("username") username: String,
+			@Field("password") password: String,
+			@Field("action") action: String
+	): Single<List<Trip>>
+
+	@FormUrlEncoded
+	@POST("query.php")
+	fun test(
+			@Field("username") username: String,
+			@Field("password") password: String,
+			@Field("action") action: String
+	): Single<Unit>
 
 }

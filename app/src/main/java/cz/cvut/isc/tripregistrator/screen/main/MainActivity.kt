@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 	}
 
 	private lateinit var preferences: PreferenceInteractor
+	private lateinit var apiInteractor: ApiInteractor
 
 	private var student: Student? = null
 
@@ -57,10 +59,12 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		}
 
 		preferences = PreferenceInteractor(this)
+		apiInteractor = ApiInteractor(preferences)
 
 		trips.adapter = tripsAdapter
 		trips.addItemDecoration(SpacingDecoration(resources.getDimension(R.dimen.word_list_spacing).toInt()))
 
+		trips_refresh.isEnabled = true
 		trips_refresh.setOnRefreshListener {
 			refreshTrips()
 		}
@@ -138,9 +142,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 
 
 	private fun loadCardNumber(queryCardNumber: String) {
-		ApiInteractor.load(
-				preferences.username,
-				preferences.password,
+		apiInteractor.load(
 				queryCardNumber
 		).subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
@@ -153,11 +155,10 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 				.subscribe({ result ->
 					updateUser(result.user)
 					updateTrips(result.trips)
-					Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
 				}, { t ->
 					t.printStackTrace()
 					performActionClear()
-					Toast.makeText(this@MainActivity, "Fail", Toast.LENGTH_SHORT).show()
+					Snackbar.make(content, t.localizedMessage, Snackbar.LENGTH_LONG).show()
 				})
 	}
 
@@ -172,19 +173,9 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 
 	override fun onConfirmation(trip: Trip, register: Boolean) {
 		if (register) {
-			ApiInteractor.register(
-					preferences.username,
-					preferences.password,
-					student!!.id,
-					trip.id
-			)
+			apiInteractor.register(student!!.id, trip.id)
 		} else {
-			ApiInteractor.unregister(
-					preferences.username,
-					preferences.password,
-					student!!.id,
-					trip.id
-			)
+			apiInteractor.unregister(student!!.id, trip.id)
 		}
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
@@ -195,26 +186,21 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 					tripsAdapter.currentlyLoadingTrip = null
 				}
 				.subscribe({ result ->
-					updateUser(result.user)
 					updateTrips(result.trips)
-					Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
 				}, { t ->
 					t.printStackTrace()
 					performActionClear()
-					Toast.makeText(this@MainActivity, "Fail", Toast.LENGTH_SHORT).show()
+					Snackbar.make(content, t.localizedMessage, Snackbar.LENGTH_LONG).show()
 				})
 	}
 
 	private fun refreshTrips() {
 		if (student == null) {
+			trips_refresh.isRefreshing = false
 			return
 		}
 
-		ApiInteractor.refresh(
-				preferences.username,
-				preferences.password,
-				student!!.id
-		)
+		apiInteractor.refresh(student!!.id)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnSubscribe {
@@ -224,13 +210,11 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 					trips_refresh.isRefreshing = false
 				}
 				.subscribe({ result ->
-					updateUser(result.user)
 					updateTrips(result.trips)
-					Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
 				}, { t ->
 					t.printStackTrace()
 					performActionClear()
-					Toast.makeText(this@MainActivity, "Fail", Toast.LENGTH_SHORT).show()
+					Snackbar.make(content, t.localizedMessage, Snackbar.LENGTH_LONG).show()
 				})
 	}
 
