@@ -109,6 +109,16 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 
 
 	private fun performActionScan() {
+//		val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, btn_scan_barcode, "transition")
+//		val revealX = (btn_scan_barcode.x + btn_scan_barcode.width / 2).toInt()
+//		val revealY = (btn_scan_barcode.y + btn_scan_barcode.height / 2).toInt()
+//
+//		val intent = Intent(this, ScannerActivity::class.java)
+//		intent.putExtra(ScannerActivity.EXTRA_CIRCULAR_REVEAL_X, revealX)
+//		intent.putExtra(ScannerActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY)
+//
+//		ActivityCompat.startActivityForResult(this, intent, RC_SCANNER, options.toBundle())
+
 		startActivityForResult(Intent(this, ScannerActivity::class.java), RC_SCANNER)
 	}
 
