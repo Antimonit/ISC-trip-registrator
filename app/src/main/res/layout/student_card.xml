@@ -1,61 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:padding="16dp"
+	android:layout_height="112dp"
 	>
 
-	<TextView
-		android:id="@+id/txt_name"
+	<android.support.v4.widget.ContentLoadingProgressBar
+		android:id="@+id/student_loading"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textColor="@android:color/black"
-		android:textSize="24sp"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		tools:text="David Khol"/>
-
-	<ImageView
-		android:id="@+id/img_gender"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="16dp"
-		android:layout_marginStart="16dp"
-		app:layout_constraintBottom_toBottomOf="@+id/txt_name"
-		app:layout_constraintStart_toEndOf="@+id/txt_name"
-		app:layout_constraintTop_toTopOf="@+id/txt_name"
-		tools:srcCompat="@drawable/gender_male"
-		android:contentDescription="@string/gender"/>
-
-	<TextView
-		android:id="@+id/txt_esn_card_number"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="12dp"
-		app:layout_constraintStart_toStartOf="@+id/txt_name"
-		app:layout_constraintTop_toBottomOf="@+id/txt_name"
-		tools:text="646167ICCU"/>
-
-	<TextView
-		android:id="@+id/txt_faculty"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintStart_toStartOf="@+id/txt_name"
-		app:layout_constraintTop_toBottomOf="@+id/txt_esn_card_number"
-		tools:text="Faculty of Information Technology"/>
-
-	<ProgressBar
-		android:id="@+id/progress"
+		android:layout_gravity="center"
 		style="?android:attr/progressBarStyle"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:visibility="gone"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent"/>
+		/>
 
-</android.support.constraint.ConstraintLayout>
+	<LinearLayout
+		android:id="@+id/student_unknown_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:padding="16dp"
+		>
+
+		<Button
+			android:id="@+id/btn_scan_barcode"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:paddingTop="16dp"
+			android:contentDescription="Camera scan"
+			android:text="Camera scan"
+			android:drawableTop="@drawable/ic_camera_alt"
+			style="@style/BorderlessButton"
+			/>
+
+		<Space
+			android:layout_width="16dp"
+			android:layout_height="wrap_content"
+			/>
+
+		<Button
+			android:id="@+id/btn_manual_barcode"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:paddingTop="16dp"
+			android:contentDescription="Manual entry"
+			android:text="Manual entry"
+			android:drawableTop="@drawable/ic_edit"
+			style="@style/BorderlessButton"
+			/>
+
+	</LinearLayout>
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/student_loaded_layout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="16dp"
+		>
+
+		<TextView
+			android:id="@+id/txt_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/black"
+			android:textSize="24sp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:text="David Khol"/>
+
+		<ImageView
+			android:id="@+id/img_gender"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:layout_marginStart="16dp"
+			app:layout_constraintBottom_toBottomOf="@+id/txt_name"
+			app:layout_constraintStart_toEndOf="@+id/txt_name"
+			app:layout_constraintTop_toTopOf="@+id/txt_name"
+			tools:srcCompat="@drawable/gender_male"
+			android:contentDescription="@string/gender"/>
+
+		<TextView
+			android:id="@+id/txt_esn_card_number"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="12dp"
+			app:layout_constraintStart_toStartOf="@+id/txt_name"
+			app:layout_constraintTop_toBottomOf="@+id/txt_name"
+			tools:text="646167ICCU"/>
+
+		<TextView
+			android:id="@+id/txt_faculty"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="@+id/txt_name"
+			app:layout_constraintTop_toBottomOf="@+id/txt_esn_card_number"
+			tools:text="Faculty of Information Technology"/>
+
+		<android.support.v7.widget.AppCompatImageButton
+			android:id="@+id/btn_clear"
+			style="@style/BorderlessButton"
+			android:layout_width="64dp"
+			android:layout_height="64dp"
+			android:minWidth="48dp"
+			android:minHeight="48dp"
+			android:contentDescription="Close"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_close"/>
+
+	</android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

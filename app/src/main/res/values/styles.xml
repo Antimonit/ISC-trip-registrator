@@ -6,4 +6,8 @@
 	    <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+	<style name="BorderlessButton" parent="Widget.AppCompat.Button.Borderless">
+		<item name="android:background">?android:attr/selectableItemBackground</item>
+	</style>
+
 </resources>

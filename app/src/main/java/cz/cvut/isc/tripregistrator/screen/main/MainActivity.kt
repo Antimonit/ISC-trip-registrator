@@ -69,6 +69,16 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 			refreshTrips()
 		}
 
+		btn_scan_barcode.setOnClickListener {
+			performActionScan()
+		}
+		btn_manual_barcode.setOnClickListener {
+			performActionManualEntry()
+		}
+		btn_clear.setOnClickListener {
+			performActionClear()
+		}
+
 		performActionClear()
 	}
 
@@ -78,24 +88,12 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		when (item.itemId) {
-			R.id.action_scan -> {
-				performActionScan()
-				return true
-			}
-			R.id.action_manual_entry -> {
-				performActionManualEntry()
-				return true
-			}
-			R.id.action_clear -> {
-				performActionClear()
-				return true
-			}
+		return when (item.itemId) {
 			R.id.action_settings -> {
 				performActionSettings()
-				return true
+				true
 			}
-			else -> return super.onOptionsItemSelected(item)
+			else -> super.onOptionsItemSelected(item)
 		}
 	}
 
@@ -147,10 +145,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		).subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnSubscribe {
-					progress.visibility = View.VISIBLE
-				}
-				.doFinally {
-					progress.visibility = View.GONE
+					showStudentLoading()
 				}
 				.subscribe({ result ->
 					updateUser(result.user)
@@ -218,16 +213,40 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 				})
 	}
 
+	private fun showStudentLoading() {
+		student_loading.show()
+		student_loaded_layout.visibility = View.GONE
+		student_unknown_layout.visibility = View.GONE
+	}
+
+	private fun showStudentUnknown() {
+		student_loading.hide()
+		student_loaded_layout.visibility = View.GONE
+		student_unknown_layout.visibility = View.VISIBLE
+	}
+
+	private fun showStudentLoaded() {
+		student_loading.hide()
+		student_loaded_layout.visibility = View.VISIBLE
+		student_unknown_layout.visibility = View.GONE
+	}
+
 	private fun updateUser(user: Student?) {
 		student = user
 
-		txt_name.text = user?.fullName
-		txt_esn_card_number.text = user?.esnCardNumber
-		txt_faculty.text = user?.faculty
+		if (user != null) {
+			showStudentLoaded()
 
-		val resource = user?.sex?.drawable
-		val drawable = if (resource != null) { ContextCompat.getDrawable(this, resource) } else { null }
-		img_gender.setImageDrawable(drawable)
+			txt_name.text = user.fullName
+			txt_esn_card_number.text = user.esnCardNumber
+			txt_faculty.text = user.faculty
+
+			val resource = user.sex?.drawable
+			val drawable = if (resource != null) { ContextCompat.getDrawable(this, resource) } else { null }
+			img_gender.setImageDrawable(drawable)
+		} else {
+			showStudentUnknown()
+		}
 	}
 
 	private fun updateTrips(trips: List<Trip>) {
