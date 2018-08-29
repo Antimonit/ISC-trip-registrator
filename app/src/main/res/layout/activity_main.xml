@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -12,25 +12,28 @@
 		android:id="@+id/overflow"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_margin="@dimen/activity_horizontal_margin"
 		android:backgroundTint="@android:color/white"
 		app:borderWidth="0dp"
 		app:elevation="2dp"
 		app:fabSize="mini"
-		app:layout_anchor="@+id/trips_refresh"
-		app:layout_anchorGravity="top|right|end"
-		app:srcCompat="@drawable/ic_more_vert"/>
+		android:layout_gravity="top|end|right"
+		android:layout_marginTop="8dp"
+		android:layout_marginEnd="8dp"
+		android:layout_marginRight="8dp"
+		app:srcCompat="@drawable/ic_more_vert"
+		/>
 
 	<android.support.v4.widget.SwipeRefreshLayout
 		android:id="@+id/trips_refresh"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"
 		android:layout_marginBottom="112dp"
 		>
 
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/trips"
+			android:fitsSystemWindows="true"
+			android:clipToPadding="false"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			app:layoutManager="android.support.v7.widget.LinearLayoutManager"
@@ -38,19 +41,6 @@
 
 	</android.support.v4.widget.SwipeRefreshLayout>
 
-	<android.support.v7.widget.Toolbar
-		android:id="@+id/student_bottom_bar"
-		android:layout_width="match_parent"
-		android:layout_height="112dp"
-		android:layout_gravity="bottom"
-		android:background="@android:color/white"
-		android:elevation="12dp"
-		app:contentInsetLeft="0dp"
-		app:contentInsetStart="0dp"
-		>
+	<include layout="@layout/student_card"/>
 
-		<include layout="@layout/student_card"/>
-
-	</android.support.v7.widget.Toolbar>
-
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

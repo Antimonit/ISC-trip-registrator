@@ -3,9 +3,12 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/student_bottom_bar"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_height="112dp"
+	android:layout_gravity="bottom"
 	android:background="@android:color/white"
+	android:elevation="12dp"
 	>
 
 	<android.support.v4.widget.ContentLoadingProgressBar
@@ -19,7 +22,7 @@
 	<LinearLayout
 		android:id="@+id/student_unknown_layout"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="112dp"
 		android:orientation="horizontal"
 		android:padding="16dp"
 		>
@@ -58,7 +61,7 @@
 	<android.support.constraint.ConstraintLayout
 		android:id="@+id/student_loaded_layout"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="112dp"
 		android:padding="16dp"
 		>
 
