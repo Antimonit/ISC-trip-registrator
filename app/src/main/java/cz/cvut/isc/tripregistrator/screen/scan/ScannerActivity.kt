@@ -6,11 +6,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup.LayoutParams
+import android.widget.FrameLayout
 import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
-import android.widget.FrameLayout
 
 /**
  * @author David Khol
@@ -21,8 +21,6 @@ class ScannerActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
 	companion object {
 		const val KEY_CODE = "code"
 		const val RC_PERMISSION_CAMERA = 1
-		const val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
-		const val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
 	}
 
 	private lateinit var scannerView: ZBarScannerView
@@ -40,16 +38,6 @@ class ScannerActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
 			addView(scannerView)
 		}
 		setContentView(rootView)
-
-//		if (state == null &&
-//				Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-//				intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) &&
-//				intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)) {
-//
-//			rootView.visibility = View.INVISIBLE
-//		} else {
-//			rootView.visibility = View.VISIBLE
-//		}
 	}
 
 	@AfterPermissionGranted(RC_PERMISSION_CAMERA)
@@ -57,25 +45,6 @@ class ScannerActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
 		if (EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA)) {
 			scannerView.setResultHandler(this)
 			scannerView.startCamera()
-
-//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-//					intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) &&
-//					intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)) {
-//				val revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
-//				val revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
-//				rootView.visibility = View.INVISIBLE
-//
-//				rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-//					override fun onGlobalLayout() {
-//						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//							revealActivity(rootView, revealX, revealY)
-//						}
-//						rootView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-//					}
-//				})
-//			} else {
-//				rootView.visibility = View.VISIBLE
-//			}
 		} else {
 			EasyPermissions.requestPermissions(this, "App needs camera to scan bar codes.", RC_PERMISSION_CAMERA, Manifest.permission.CAMERA)
 		}

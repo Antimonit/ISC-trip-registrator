@@ -1,6 +1,6 @@
 <resources>
-	<color name="colorPrimary">#3f528e</color>
-	<color name="colorPrimaryDark">#324171</color>
+	<color name="colorPrimary">#FFFFFF</color>
+	<color name="colorPrimaryDark">#CCCCCC</color>
 	<color name="colorAccent">#e57373</color>
 
     <color name="trip_registered">#66AA66</color>

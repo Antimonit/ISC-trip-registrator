@@ -51,15 +51,23 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		setSupportActionBar(toolbar)
-		supportActionBar?.apply {
-			setDisplayShowTitleEnabled(false)
-			setDisplayHomeAsUpEnabled(false)
-			setDisplayShowCustomEnabled(false)
-		}
-
 		preferences = PreferenceInteractor(this)
 		apiInteractor = ApiInteractor(preferences)
+
+		overflow.setOnClickListener {
+			PopupMenu(overflow.context, overflow).apply {
+				menuInflater.inflate(R.menu.main, menu)
+				setOnMenuItemClickListener { item ->
+					when (item.itemId) {
+						R.id.action_settings -> {
+							performActionSettings()
+							true
+						}
+						else -> super.onOptionsItemSelected(item)
+					}
+				}
+			}.show()
+		}
 
 		trips.adapter = tripsAdapter
 		trips.addItemDecoration(SpacingDecoration(resources.getDimension(R.dimen.word_list_spacing).toInt()))
@@ -82,21 +90,6 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		performActionClear()
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		menuInflater.inflate(R.menu.main, menu)
-		return true
-	}
-
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
-			R.id.action_settings -> {
-				performActionSettings()
-				true
-			}
-			else -> super.onOptionsItemSelected(item)
-		}
-	}
-
 	override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
 		if (requestCode == RC_SCANNER) {
 			if (resultCode == Activity.RESULT_OK) {
@@ -109,16 +102,6 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 
 
 	private fun performActionScan() {
-//		val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, btn_scan_barcode, "transition")
-//		val revealX = (btn_scan_barcode.x + btn_scan_barcode.width / 2).toInt()
-//		val revealY = (btn_scan_barcode.y + btn_scan_barcode.height / 2).toInt()
-//
-//		val intent = Intent(this, ScannerActivity::class.java)
-//		intent.putExtra(ScannerActivity.EXTRA_CIRCULAR_REVEAL_X, revealX)
-//		intent.putExtra(ScannerActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY)
-//
-//		ActivityCompat.startActivityForResult(this, intent, RC_SCANNER, options.toBundle())
-
 		startActivityForResult(Intent(this, ScannerActivity::class.java), RC_SCANNER)
 	}
 
@@ -252,7 +235,11 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 			txt_faculty.text = user.faculty
 
 			val resource = user.sex?.drawable
-			val drawable = if (resource != null) { ContextCompat.getDrawable(this, resource) } else { null }
+			val drawable = if (resource != null) {
+				ContextCompat.getDrawable(this, resource)
+			} else {
+				null
+			}
 			img_gender.setImageDrawable(drawable)
 		} else {
 			showStudentUnknown()
