@@ -83,8 +83,8 @@ class TripsAdapter(
 					else -> R.string.not_registered
 				})
 
-				ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(ContextCompat.getColor(context,
-						when {
+				ViewCompat.setBackgroundTintList(this,
+						ColorStateList.valueOf(ContextCompat.getColor(context, when {
 							trip.isRegistered -> R.color.trip_registered
 							trip.isFull -> R.color.trip_full
 							else -> R.color.trip_not_registered

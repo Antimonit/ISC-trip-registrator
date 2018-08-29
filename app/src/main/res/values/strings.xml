@@ -47,6 +47,6 @@
     <string name="error_connection">Internet connection error</string>
 
 	<string name="price_czk">%1$d Kč</string>
-	<string name="capacity">%1$d/%2$s</string>
+	<string name="capacity">%1$d / %2$s</string>
 
 </resources>

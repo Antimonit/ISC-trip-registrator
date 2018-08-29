@@ -1,11 +1,13 @@
 <resources>
 	<color name="colorPrimary">#FFFFFF</color>
-	<color name="colorPrimaryDark">#CCCCCC</color>
+	<color name="colorPrimaryDark">#AFAFAF</color>
 	<color name="colorAccent">#e57373</color>
 
     <color name="trip_registered">#66AA66</color>
-    <color name="trip_not_registered">#FFFFFF</color>
-    <color name="trip_full">#CC6666</color>
+    <color name="trip_not_registered">#CC6666</color>
+    <color name="trip_full">#7F7F7F</color>
+
+	<color name="window_background">#EFEFEF</color>
 
 	<color name="ic_launcher_background">#FFFFFF</color>
 </resources>

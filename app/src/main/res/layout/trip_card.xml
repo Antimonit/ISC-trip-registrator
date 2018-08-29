@@ -11,18 +11,19 @@
 	<android.support.constraint.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:padding="16dp"
-		>
+		android:clipToPadding="false"
+		android:padding="16dp">
 
 		<TextView
 			android:id="@+id/txt_name"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginEnd="8dp"
-			android:layout_marginRight="8dp"
+			android:ellipsize="end"
+			android:fontFamily="@font/nunito_semibold"
+			android:maxLines="1"
 			android:textColor="@android:color/black"
-			android:textSize="24sp"
-			app:layout_constraintEnd_toStartOf="@+id/btn_register"
+			android:textSize="22sp"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
 			tools:text="Český Krumlov"/>
@@ -53,20 +54,24 @@
 			android:id="@+id/txt_date_from"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
+			android:layout_marginLeft="16dp"
+			android:layout_marginStart="16dp"
 			android:fontFamily="@font/roboto_condensed_regular"
+			android:textColor="@android:color/black"
 			android:textSize="16sp"
-			app:layout_constraintStart_toStartOf="@+id/txt_name"
-			app:layout_constraintTop_toBottomOf="@+id/txt_name"
+			app:layout_constraintBottom_toBottomOf="@+id/imageView"
+			app:layout_constraintStart_toEndOf="@+id/imageView"
+			app:layout_constraintTop_toTopOf="@+id/imageView"
 			tools:text="11 Dec"/>
 
 		<TextView
 			android:id="@+id/txt_date_to"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="16dp"
-			android:layout_marginStart="16dp"
+			android:layout_marginLeft="36dp"
+			android:layout_marginStart="36dp"
 			android:fontFamily="@font/roboto_condensed_regular"
+			android:textColor="@android:color/black"
 			android:textSize="16sp"
 			app:layout_constraintBaseline_toBaselineOf="@+id/txt_date_from"
 			app:layout_constraintStart_toEndOf="@+id/txt_date_from"
@@ -76,35 +81,44 @@
 			android:id="@+id/txt_price"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="56dp"
+			android:layout_marginEnd="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginStart="8dp"
 			android:textColor="@android:color/black"
 			android:textSize="20sp"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintStart_toStartOf="@+id/txt_name"
-			app:layout_constraintTop_toBottomOf="@+id/txt_name"
+			app:layout_constraintBaseline_toBaselineOf="@+id/txt_capacity"
+			app:layout_constraintEnd_toEndOf="@+id/btn_register"
+			app:layout_constraintStart_toStartOf="@+id/btn_register"
 			tools:text="1800 Kč"/>
 
 		<TextView
 			android:id="@+id/txt_capacity"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginEnd="8dp"
-			android:layout_marginLeft="8dp"
-			android:layout_marginRight="8dp"
-			android:layout_marginStart="8dp"
-			app:layout_constraintEnd_toEndOf="@+id/btn_register"
-			app:layout_constraintStart_toStartOf="@+id/btn_register"
-			app:layout_constraintTop_toBottomOf="@+id/btn_register"
-			tools:text="17/50"/>
+			android:layout_marginLeft="16dp"
+			android:layout_marginStart="16dp"
+			android:fontFamily="@font/roboto_condensed_regular"
+			android:textColor="@android:color/black"
+			android:textSize="16sp"
+			app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+			app:layout_constraintStart_toEndOf="@+id/imageView2"
+			app:layout_constraintTop_toTopOf="@+id/imageView2"
+			tools:text="17 / 50"/>
 
 		<Button
 			android:id="@+id/btn_register"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:background="@drawable/btn_register"
+			android:minHeight="40dp"
+			android:minWidth="40dp"
 			android:paddingLeft="16dp"
 			android:paddingRight="16dp"
+			android:textColor="@android:color/white"
+			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/imageView3"
 			tools:text="Register"/>
 
 		<ProgressBar
@@ -115,7 +129,39 @@
 			app:layout_constraintBottom_toBottomOf="@+id/btn_register"
 			app:layout_constraintEnd_toEndOf="@+id/btn_register"
 			app:layout_constraintStart_toStartOf="@+id/btn_register"
-			app:layout_constraintTop_toTopOf="parent"/>
+			app:layout_constraintTop_toTopOf="@+id/btn_register"/>
+
+		<ImageView
+			android:id="@+id/imageView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/imageView2"
+			app:srcCompat="@drawable/ic_date_range"/>
+
+		<ImageView
+			android:id="@+id/imageView3"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginStart="8dp"
+			app:layout_constraintBottom_toBottomOf="@+id/imageView"
+			app:layout_constraintEnd_toStartOf="@+id/txt_date_to"
+			app:layout_constraintStart_toEndOf="@+id/txt_date_from"
+			app:layout_constraintTop_toTopOf="@+id/imageView"
+			app:srcCompat="@drawable/ic_baseline_arrow_right_alt"/>
+
+		<ImageView
+			android:id="@+id/imageView2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/txt_name"
+			app:srcCompat="@drawable/ic_sentiment_very_satisfied"/>
 
 	</android.support.constraint.ConstraintLayout>
 
