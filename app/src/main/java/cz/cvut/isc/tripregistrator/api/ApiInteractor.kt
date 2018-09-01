@@ -13,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.HttpException
 
 /**
  * Sets up several networking libraries such as OkHttp, Moshi and Retrofit in order
@@ -40,6 +41,8 @@ class ApiInteractor(private val preferences: PreferenceInteractor) {
 			.add(KotlinJsonAdapterFactory())
 			.build()
 
+	private val apiErrorAdapter = moshi.adapter(ApiError::class.java)
+
 	private var service: ApiDescription? = null
 		get() {
 			if (loadedUrl == null || loadedUrl != baseUrl) {
@@ -61,31 +64,44 @@ class ApiInteractor(private val preferences: PreferenceInteractor) {
 		}
 
 
+	private fun <T> Single<T>.mapErrors() = onErrorResumeNext {	Single.error<T>(it.mapError()) }
+
+	private fun Completable.mapErrors() = onErrorResumeNext { Completable.error(it.mapError()) }
+
+	private fun Throwable.mapError(): Throwable? {
+		if (this is HttpException) {
+			response()?.errorBody()?.let {
+				return apiErrorAdapter.fromJson(it.string())?.toException()
+			}
+		}
+		return this
+	}
+
 	private fun <T> nullService() = Single.error<T>(IllegalArgumentException("Invalid URL"))
 
 
 	fun load(esnNumber: String): Single<Response> {
-		return service?.load(preferences.username, preferences.password, "load", esnNumber) ?: nullService()
+		return service?.load(preferences.username, preferences.password, "load", esnNumber)?.mapErrors() ?: nullService()
 	}
 
 	fun register(userId: String, tripId: String): Single<Response> {
-		return service?.register(preferences.username, preferences.password, "register", userId, tripId) ?: nullService()
+		return service?.register(preferences.username, preferences.password, "register", userId, tripId)?.mapErrors() ?: nullService()
 	}
 
 	fun unregister(userId: String, tripId: String): Single<Response> {
-		return service?.register(preferences.username, preferences.password, "unregister", userId, tripId) ?: nullService()
+		return service?.register(preferences.username, preferences.password, "unregister", userId, tripId)?.mapErrors() ?: nullService()
 	}
 
 	fun refresh(userId: String): Single<Response> {
-		return service?.refresh(preferences.username, preferences.password, "refresh", userId) ?: nullService()
+		return service?.refresh(preferences.username, preferences.password, "refresh", userId)?.mapErrors() ?: nullService()
 	}
 
 	fun trips(): Single<List<Trip>> {
-		return service?.trips(preferences.username, preferences.password, "trips") ?: nullService()
+		return service?.trips(preferences.username, preferences.password, "trips")?.mapErrors() ?: nullService()
 	}
 
 	fun ping(): Completable {
-		return service?.ping(preferences.username, preferences.password, "ping") ?: nullService<Any>().ignoreElement()
+		return service?.ping(preferences.username, preferences.password, "ping")?.mapErrors() ?: nullService<Any>().ignoreElement()
 	}
 
 }

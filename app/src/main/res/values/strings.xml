@@ -19,7 +19,6 @@
 	<string name="settings_dialog_username">Username</string>
 	<string name="settings_dialog_password">Password</string>
 	<string name="settings_dialog_success">All good :)</string>
-	<string name="settings_dialog_unauthorized">Looks like you have entered invalid username or password.</string>
 
 	<string name="confirm_dialog_student">Student</string>
 	<string name="confirm_dialog_trip">Trip</string>

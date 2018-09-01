@@ -71,12 +71,8 @@ class SettingsDialog : DialogFragment() {
 								postDelayed({ dismiss() }, 1000)
 							}, { t ->
 								t.printStackTrace()
-								if (t is HttpException && t.code() == 401) {
-									settings_test_result.text = context.getString(R.string.settings_dialog_unauthorized)
-								} else {
-									settings_test_result.text = t.message
-								}
 								settings_test_result.setTextColor(ContextCompat.getColor(context, R.color.red))
+								settings_test_result.text = t.localizedMessage
 							})
 				}
 			})

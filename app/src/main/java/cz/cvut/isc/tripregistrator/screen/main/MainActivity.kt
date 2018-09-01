@@ -124,12 +124,12 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEnt
 							img_student_gender.setImageDrawable(drawable)
 						}
 						is StudentState.Error -> {
-							it.throwable.printStackTrace()
 							showStudentUnknown()
-							Snackbar.make(content, it.throwable.localizedMessage, Snackbar.LENGTH_LONG).show()
+							Snackbar.make(content, it.message, Snackbar.LENGTH_LONG).show()
 						}
 					}
 				}
+
 		disposables += viewModel.observeTripsState()
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe {
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEnt
 						}
 						is TripsState.Error -> {
 							trips_refresh.isRefreshing = false
-							Snackbar.make(content, it.throwable.localizedMessage, Snackbar.LENGTH_LONG).show()
+							Snackbar.make(content, it.message, Snackbar.LENGTH_LONG).show()
 						}
 					}
 				}
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEnt
 						}
 						is LoadingTripState.Error -> {
 							tripsAdapter.currentlyLoadingTrip = null
-							Snackbar.make(content, it.throwable.localizedMessage, Snackbar.LENGTH_LONG).show()
+							Snackbar.make(content, it.message, Snackbar.LENGTH_LONG).show()
 						}
 					}
 				}

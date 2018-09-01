@@ -25,8 +25,6 @@ class MainViewModel : ViewModel() {
 
 	var student: Student? = null
 		private set
-
-
 	init {
 		observeStudentState().subscribe {
 			student = if (it is StudentState.Loaded) { it.student } else { null }
@@ -56,7 +54,7 @@ class MainViewModel : ViewModel() {
 					tripsState.onNext(TripsState.Loaded(result.trips))
 				}, { t ->
 					t.printStackTrace()
-					studentState.onNext(StudentState.Error(t))
+					studentState.onNext(StudentState.Error(t.localizedMessage))
 				})
 	}
 
@@ -76,7 +74,7 @@ class MainViewModel : ViewModel() {
 					tripsState.onNext(TripsState.Loaded(trips))
 				}, { t ->
 					t.printStackTrace()
-					tripsState.onNext(TripsState.Error(t))
+					tripsState.onNext(TripsState.Error(t.localizedMessage))
 				})
 
 	}
@@ -102,7 +100,7 @@ class MainViewModel : ViewModel() {
 						tripsState.onNext(TripsState.Loaded(result.trips))
 					}, { t ->
 						t.printStackTrace()
-						loadingTripState.onNext(LoadingTripState.Error(t))
+						loadingTripState.onNext(LoadingTripState.Error(t.localizedMessage))
 					})
 		}
 	}
@@ -112,17 +110,17 @@ sealed class StudentState {
 	object Unknown : StudentState()
 	object Loading : StudentState()
 	class Loaded(val student: Student): StudentState()
-	class Error(val throwable: Throwable): StudentState()
+	class Error(val message: String): StudentState()
 }
 
 sealed class TripsState {
 	object Loading : TripsState()
 	class Loaded(val trips: List<Trip>): TripsState()
-	class Error(val throwable: Throwable): TripsState()
+	class Error(val message: String): TripsState()
 }
 
 sealed class LoadingTripState {
 	object None : LoadingTripState()
 	class Loading(val loadingTrip: Trip) : LoadingTripState()
-	class Error(val throwable: Throwable): LoadingTripState()
+	class Error(val message: String): LoadingTripState()
 }
