@@ -18,8 +18,7 @@ import java.text.SimpleDateFormat
  * @since 26.08.2018
  */
 class TripsAdapter(
-		private val registerTrip: (Trip) -> Unit,
-		private val unregisterTrip: (Trip) -> Unit
+		private val tripConfirmation: (Trip, Boolean) -> Unit
 ) : RecyclerView.Adapter<TripsAdapter.ViewHolder>() {
 
 	var trips: List<Trip> = emptyList()
@@ -45,7 +44,7 @@ class TripsAdapter(
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		val isLoading = trips[position].id == currentlyLoadingTrip?.id
-		holder.bind(trips[position], registerTrip, unregisterTrip, isLoading)
+		holder.bind(trips[position], tripConfirmation, isLoading)
 	}
 
 	override fun onViewRecycled(holder: ViewHolder) {
@@ -63,7 +62,7 @@ class TripsAdapter(
 
 		private val context = view.context
 
-		fun bind(trip: Trip, registerTrip: (Trip) -> Unit, unregisterTrip: (Trip) -> Unit, isLoading: Boolean) {
+		fun bind(trip: Trip, tripConfirmation: (Trip, Boolean) -> Unit, isLoading: Boolean) {
 			view.txt_name.text = trip.name
 			view.txt_date_from.text = trip.dateFrom?.let { dateFormat.format(it) }
 			view.txt_date_to.text = trip.dateTo?.let { dateFormat.format(it) }
@@ -94,11 +93,7 @@ class TripsAdapter(
 							})))
 
 					setOnClickListener {
-						if (isRegistered) {
-							unregisterTrip(trip)
-						} else {
-							registerTrip(trip)
-						}
+						tripConfirmation(trip, isRegistered)
 					}
 				} else {
 					visibility = View.INVISIBLE

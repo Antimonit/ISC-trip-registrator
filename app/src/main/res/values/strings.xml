@@ -1,50 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ISC Trip Registrator</string>
+	<string name="app_name">ISC Trip Registrator</string>
 
-    <string name="action_scan">Scan</string>
-    <string name="action_manual_entry">Manual entry</string>
-    <string name="action_clear">Clear</string>
-    <string name="action_settings">Settings</string>
+	<string name="action_settings">Settings</string>
 
 	<string name="gender">Gender</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="unknown">Unknown</string>
+	<string name="male">Male</string>
+	<string name="female">Female</string>
+	<string name="unknown">Unknown</string>
 
-    <string name="registered">Registered</string>
-    <string name="not_registered">Not registered</string>
-    <string name="full">Full</string>
-    <string name="unlimited">Unlimited</string>
-
-    <string name="entry_dialog_title">Manual entry</string>
-    <string name="entry_dialog_message">Enter the ESN card number:</string>
+	<string name="registered">Registered</string>
+	<string name="not_registered">Not registered</string>
+	<string name="full">Full</string>
+	<string name="unlimited">Unlimited</string>
 
 	<string name="settings_dialog_title">Settings</string>
-    <string name="settings_dialog_url">URL</string>
-    <string name="settings_dialog_username">Username</string>
-    <string name="settings_dialog_password">Password</string>
+	<string name="settings_dialog_url">URL</string>
+	<string name="settings_dialog_username">Username</string>
+	<string name="settings_dialog_password">Password</string>
+	<string name="settings_dialog_success">All good :)</string>
+	<string name="settings_dialog_unauthorized">Looks like you have entered invalid username or password.</string>
 
-    <string name="load_dialog_title">Loading student data</string>
-    <string name="load_dialog_message">ESN card number:</string>
-    <string name="register_dialog_title">Registering for trip</string>
-    <string name="register_dialog_message">Trip name:</string>
-    <string name="unregister_dialog_title">Unregistering from trip</string>
-
-    <string name="confirm_register_dialog_title">Confirm trip registration</string>
-    <string name="confirm_register_dialog_student">Student</string>
-    <string name="confirm_register_dialog_trip">Trip</string>
-    <string name="confirm_register_dialog_yes">Register</string>
-    <string name="confirm_unregister_dialog_title">Confirm trip unregistration</string>
-    <string name="confirm_unregister_dialog_yes">Unregister</string>
-
-    <string name="error_authentication">Authentication error</string>
-    <string name="error_database">Database connection error</string>
-    <string name="error_internal">Internal error</string>
-    <string name="error_card">Card number not registered</string>
-    <string name="error_connection">Internet connection error</string>
+	<string name="confirm_dialog_student">Student</string>
+	<string name="confirm_dialog_trip">Trip</string>
+	<string name="confirm_dialog_register_title">Confirm registration</string>
+	<string name="confirm_dialog_register_yes">Register</string>
+	<string name="confirm_dialog_unregister_title">Confirm unregistration</string>
+	<string name="confirm_dialog_unregister_yes">Unregister</string>
 
 	<string name="price_czk">%1$d Kč</string>
 	<string name="capacity">%1$d / %2$s</string>
+
+	<string name="manual_entry_dialog_title">Manual entry</string>
+	<string name="manual_entry_dialog_hint">ESN card number</string>
 
 </resources>

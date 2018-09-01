@@ -66,13 +66,13 @@ class SettingsDialog : DialogFragment() {
 							}
 							.subscribe({
 								settings_test_result.setTextColor(ContextCompat.getColor(context, R.color.green))
-								settings_test_result.text = "All good :)"
+								settings_test_result.text = context.getString(R.string.settings_dialog_success)
 								settings_test_button.isEnabled = false
 								postDelayed({ dismiss() }, 1000)
 							}, { t ->
 								t.printStackTrace()
 								if (t is HttpException && t.code() == 401) {
-									settings_test_result.text = "Looks like you have entered invalid username or password."
+									settings_test_result.text = context.getString(R.string.settings_dialog_unauthorized)
 								} else {
 									settings_test_result.text = t.message
 								}

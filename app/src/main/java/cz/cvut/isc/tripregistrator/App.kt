@@ -9,8 +9,14 @@ import com.facebook.stetho.Stetho
  */
 class App : Application() {
 
+	companion object {
+		lateinit var context: Application
+			private set
+	}
+
 	override fun onCreate() {
 		super.onCreate()
+		App.context = this
 
 		Stetho.initializeWithDefaults(this)
 	}
