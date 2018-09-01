@@ -6,6 +6,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import cz.cvut.isc.tripregistrator.PreferenceInteractor
 import cz.cvut.isc.tripregistrator.model.Response
 import cz.cvut.isc.tripregistrator.model.Trip
+import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -52,6 +53,7 @@ class ApiInteractor(private val preferences: PreferenceInteractor) {
 							.create(ApiDescription::class.java)
 							.also { loadedUrl = baseUrl }
 				} catch (e: IllegalArgumentException) {
+					// URL can be malformed in which case IllegalArgumentException is thrown
 					null
 				}
 			}
@@ -80,6 +82,10 @@ class ApiInteractor(private val preferences: PreferenceInteractor) {
 
 	fun trips(): Single<List<Trip>> {
 		return service?.trips(preferences.username, preferences.password, "trips") ?: nullService()
+	}
+
+	fun ping(): Completable {
+		return service?.ping(preferences.username, preferences.password, "ping") ?: nullService<Any>().ignoreElement()
 	}
 
 }

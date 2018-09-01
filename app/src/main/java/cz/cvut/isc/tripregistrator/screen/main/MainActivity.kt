@@ -1,22 +1,18 @@
 package cz.cvut.isc.tripregistrator.screen.main
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
-import android.widget.*
+import android.widget.PopupMenu
 import cz.cvut.isc.tripregistrator.PreferenceInteractor
 import cz.cvut.isc.tripregistrator.R
-
 import cz.cvut.isc.tripregistrator.api.ApiInteractor
 import cz.cvut.isc.tripregistrator.dialog.ConfirmationDialog
+import cz.cvut.isc.tripregistrator.dialog.ManualEntryDialog
 import cz.cvut.isc.tripregistrator.dialog.SettingsDialog
 import cz.cvut.isc.tripregistrator.model.Student
 import cz.cvut.isc.tripregistrator.model.Trip
@@ -27,7 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.student_card.*
 
-class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
+class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEntryDialog.Callback {
 
 	companion object {
 		const val RC_SCANNER = 1
@@ -83,11 +79,12 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		btn_manual_barcode.setOnClickListener {
 			performActionManualEntry()
 		}
-		btn_clear.setOnClickListener {
-			performActionClear()
+		btn_student_clear.setOnClickListener {
+			updateUser(null)
 		}
 
-		performActionClear()
+		updateUser(null)
+		refreshTrips()
 	}
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
@@ -100,37 +97,17 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 		}
 	}
 
-
 	private fun performActionScan() {
 		startActivityForResult(Intent(this, ScannerActivity::class.java), RC_SCANNER)
 	}
 
 	private fun performActionManualEntry() {
-		AlertDialog.Builder(this).apply {
-			setTitle(R.string.entry_dialog_title)
-			setMessage(R.string.entry_dialog_message)
-
-			val input = EditText(context)
-
-			setView(input)
-			setPositiveButton(android.R.string.ok) { _, _ ->
-				loadCardNumber(input.text.toString())
-			}
-			setNegativeButton(android.R.string.cancel, null)
-		}.create().apply {
-			window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-		}.show()
-	}
-
-	private fun performActionClear() {
-		updateUser(null)
-		updateTrips(emptyList())
+		ManualEntryDialog().show(supportFragmentManager, "settings")
 	}
 
 	private fun performActionSettings() {
 		SettingsDialog().show(supportFragmentManager, "settings")
 	}
-
 
 	private fun loadCardNumber(queryCardNumber: String) {
 		apiInteractor.load(
@@ -145,7 +122,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 					updateTrips(result.trips)
 				}, { t ->
 					t.printStackTrace()
-					performActionClear()
+					updateUser(null)
 					Snackbar.make(content, t.localizedMessage, Snackbar.LENGTH_LONG).show()
 				})
 	}
@@ -177,31 +154,31 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 					updateTrips(result.trips)
 				}, { t ->
 					t.printStackTrace()
-					performActionClear()
 					Snackbar.make(content, t.localizedMessage, Snackbar.LENGTH_LONG).show()
 				})
 	}
 
+	override fun onConfirmation(esnCardNumber: String) {
+		loadCardNumber(esnCardNumber)
+	}
+
 	private fun refreshTrips() {
 		if (student == null) {
-			trips_refresh.isRefreshing = false
-			return
+			apiInteractor.trips()
+		} else {
+			apiInteractor.refresh(student!!.id)
+					.map { it.trips }
 		}
-
-		apiInteractor.refresh(student!!.id)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
-				.doOnSubscribe {
-					trips_refresh.isRefreshing = true
-				}
-				.doFinally {
-					trips_refresh.isRefreshing = false
-				}
-				.subscribe({ result ->
-					updateTrips(result.trips)
+				.doOnSubscribe { trips_refresh.isRefreshing = true }
+				.doFinally { trips_refresh.isRefreshing = false }
+				.subscribe({ trips ->
+					updateTrips(trips)
 				}, { t ->
 					t.printStackTrace()
-					performActionClear()
+					updateUser(null)
+					updateTrips(emptyList())
 					Snackbar.make(content, t.localizedMessage, Snackbar.LENGTH_LONG).show()
 				})
 	}
@@ -227,12 +204,14 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 	private fun updateUser(user: Student?) {
 		student = user
 
-		if (user != null) {
+		if (user == null) {
+			showStudentUnknown()
+		} else {
 			showStudentLoaded()
 
-			txt_name.text = user.fullName
-			txt_esn_card_number.text = user.esnCardNumber
-			txt_faculty.text = user.faculty
+			txt_student_name.text = user.fullName
+			txt_student_esn_card_number.text = user.esnCardNumber
+			txt_student_faculty.text = user.faculty
 
 			val resource = user.sex?.drawable
 			val drawable = if (resource != null) {
@@ -240,9 +219,7 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback {
 			} else {
 				null
 			}
-			img_gender.setImageDrawable(drawable)
-		} else {
-			showStudentUnknown()
+			img_student_gender.setImageDrawable(drawable)
 		}
 	}
 

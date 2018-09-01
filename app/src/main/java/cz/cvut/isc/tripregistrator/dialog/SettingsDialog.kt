@@ -3,17 +3,21 @@ package cz.cvut.isc.tripregistrator.dialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
-import android.widget.CheckBox
+import android.view.View
 import cz.cvut.isc.tripregistrator.PreferenceInteractor
 import cz.cvut.isc.tripregistrator.R
+import cz.cvut.isc.tripregistrator.api.ApiInteractor
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.settings_dialog.view.*
+import retrofit2.HttpException
 
 /**
- * Settings dialog in which user can change server url, username and password.
+ * Settings dialog in which user can change server url, username and password and test the
+ * connection
  *
  * @author David Khol
  * @since 26.08.2018
@@ -21,51 +25,63 @@ import kotlinx.android.synthetic.main.settings_dialog.view.*
 class SettingsDialog : DialogFragment() {
 
 	private lateinit var preferences: PreferenceInteractor
+	private lateinit var apiInteractor: ApiInteractor
+
 	private val previousUrl by lazy { preferences.url }
 	private val previousUsername by lazy { preferences.username }
+	private val previousPassword by lazy { preferences.password }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		preferences = PreferenceInteractor(context!!)
+		apiInteractor = ApiInteractor(preferences)
+	}
+
+	private fun flushPreferences(view: View) {
+		preferences.url = view.settings_url.text.toString()
+		preferences.username = view.settings_username.text.toString()
+		preferences.password = view.settings_password.text.toString()
 	}
 
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 		return AlertDialog.Builder(context!!).apply {
-			val view = LayoutInflater.from(context).inflate(R.layout.settings_dialog, null, false).apply {
-				settings_dialog_url.setText(previousUrl)
-				settings_dialog_username.setText(previousUsername)
-
-				findViewById<CheckBox>(R.id.settings_dialog_show_password).apply {
-					setOnCheckedChangeListener { _, isChecked ->
-						val selectionStart = settings_dialog_password.selectionStart
-						val selectionEnd = settings_dialog_password.selectionEnd
-						settings_dialog_password.transformationMethod = if (isChecked) {
-							HideReturnsTransformationMethod.getInstance()
-						} else {
-							PasswordTransformationMethod.getInstance()
-						}
-						settings_dialog_password.setSelection(selectionStart, selectionEnd)
-					}
+			setView(LayoutInflater.from(context).inflate(R.layout.settings_dialog, null, false).apply {
+				settings_url.setText(previousUrl)
+				settings_username.setText(previousUsername)
+				settings_password.setText(previousPassword)
+				settings_test_button.setOnClickListener {
+					flushPreferences(this)
+					apiInteractor.ping()
+							.subscribeOn(Schedulers.io())
+							.observeOn(AndroidSchedulers.mainThread())
+							.doOnSubscribe {
+								settings_test_result.visibility = View.GONE
+								settings_test_button.visibility = View.INVISIBLE
+								settings_test_progress.visibility = View.VISIBLE
+							}
+							.doAfterTerminate {
+								settings_test_result.visibility = View.VISIBLE
+								settings_test_button.visibility = View.VISIBLE
+								settings_test_progress.visibility = View.INVISIBLE
+							}
+							.subscribe({
+								settings_test_result.setTextColor(ContextCompat.getColor(context, R.color.green))
+								settings_test_result.text = "All good :)"
+								settings_test_button.isEnabled = false
+								postDelayed({ dismiss() }, 1000)
+							}, { t ->
+								t.printStackTrace()
+								if (t is HttpException && t.code() == 401) {
+									settings_test_result.text = "Looks like you have entered invalid username or password."
+								} else {
+									settings_test_result.text = t.message
+								}
+								settings_test_result.setTextColor(ContextCompat.getColor(context, R.color.red))
+							})
 				}
-			}
-			setView(view)
-			setPositiveButton(android.R.string.ok) { _, _ ->
-				val newUrl = view.settings_dialog_url.text.toString()
-				val newUsername = view.settings_dialog_username.text.toString()
-				val newPassword = view.settings_dialog_password.text.toString()
-
-				if (newUrl != previousUrl || newUsername != previousUsername || newPassword != "") {
-					preferences.url = newUrl
-					preferences.username = newUsername
-					if (newPassword != "") {
-						preferences.password = newPassword
-					}
-				}
-			}
-			setNegativeButton(android.R.string.cancel, null)
+			})
 		}.create().apply {
 			setCancelable(true)
-			setCanceledOnTouchOutside(false)
 		}
 	}
 

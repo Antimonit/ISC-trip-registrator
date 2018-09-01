@@ -2,6 +2,7 @@ package cz.cvut.isc.tripregistrator.api
 
 import cz.cvut.isc.tripregistrator.model.Response
 import cz.cvut.isc.tripregistrator.model.Trip
+import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -13,6 +14,14 @@ import retrofit2.http.POST
  * we can use to communicate with the server.
  */
 interface ApiDescription {
+
+	@FormUrlEncoded
+	@POST("query.php")
+	fun ping(
+			@Field("username") username: String,
+			@Field("password") password: String,
+			@Field("action") action: String
+	): Completable
 
 	@FormUrlEncoded
 	@POST("query.php")

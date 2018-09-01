@@ -30,11 +30,14 @@ data class Trip(
 		@Json(name = "trip_participants")
 		val participants: Int,
 		@Json(name = "registered")
-		private val _registered: String
+		private val _registered: String?
 ) : Parcelable {
 
-	val isRegistered: Boolean
-		get() = _registered == "y"
+	val isRegistered: Boolean?
+		get() {
+			if (_registered == null) return null
+			return _registered == "y"
+		}
 
 	val isFull: Boolean
 		get() = if (capacity == null) {

@@ -66,9 +66,7 @@ class ConfirmationDialog : DialogFragment() {
 	}
 
 	interface Callback {
-
 		fun onConfirmation(trip: Trip, register: Boolean)
-
 	}
 
 }

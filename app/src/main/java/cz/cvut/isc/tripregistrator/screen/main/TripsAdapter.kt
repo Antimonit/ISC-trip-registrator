@@ -76,26 +76,32 @@ class TripsAdapter(
 			)
 			view.progress.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
 			view.btn_register.apply {
-				visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
-				text = context.getString(when {
-					trip.isRegistered -> R.string.registered
-					trip.isFull -> R.string.full
-					else -> R.string.not_registered
-				})
+				val isRegistered = trip.isRegistered
+				val isFull = trip.isFull
+				if (isRegistered != null) {
+					visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
+					text = context.getString(when {
+						isRegistered -> R.string.registered
+						isFull -> R.string.full
+						else -> R.string.not_registered
+					})
 
-				ViewCompat.setBackgroundTintList(this,
-						ColorStateList.valueOf(ContextCompat.getColor(context, when {
-							trip.isRegistered -> R.color.trip_registered
-							trip.isFull -> R.color.trip_full
-							else -> R.color.trip_not_registered
-						})))
+					ViewCompat.setBackgroundTintList(this,
+							ColorStateList.valueOf(ContextCompat.getColor(context, when {
+								isRegistered -> R.color.green
+								isFull -> R.color.gray
+								else -> R.color.red
+							})))
 
-				setOnClickListener {
-					if (trip.isRegistered) {
-						unregisterTrip(trip)
-					} else {
-						registerTrip(trip)
+					setOnClickListener {
+						if (isRegistered) {
+							unregisterTrip(trip)
+						} else {
+							registerTrip(trip)
+						}
 					}
+				} else {
+					visibility = View.INVISIBLE
 				}
 			}
 		}
