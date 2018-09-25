@@ -14,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 /**
  * Sets up several networking libraries such as OkHttp, Moshi and Retrofit in order
@@ -74,10 +75,13 @@ class ApiInteractor(private val preferences: PreferenceInteractor) {
 				return apiErrorAdapter.fromJson(it.string())?.toException()
 			}
 		}
+		if (this is SocketTimeoutException) {
+			return Exception("Connection timed out.", this)
+		}
 		return this
 	}
 
-	private fun <T> nullService() = Single.error<T>(IllegalArgumentException("Invalid URL"))
+	private fun <T> nullService() = Single.error<T>(IllegalArgumentException("Invalid URL."))
 
 
 	fun load(esnNumber: String): Single<Response> {
