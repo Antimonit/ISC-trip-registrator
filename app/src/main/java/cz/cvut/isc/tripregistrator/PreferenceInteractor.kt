@@ -15,9 +15,9 @@ class PreferenceInteractor(context: Context) {
 		private const val KEY_USERNAME = "username"
 		private const val KEY_PASSWORD = "password"
 
-		private const val DEFAULT_QUERY_URL = "http://192.168.0.200/query.php"
-		private const val DEFAULT_USERNAME = "ISC_username"
-		private const val DEFAULT_PASSWORD = "ISC_password"
+		private const val DEFAULT_QUERY_URL = "https://isc.cvut.cz/"
+		private const val DEFAULT_USERNAME = ""
+		private const val DEFAULT_PASSWORD = ""
 	}
 
 	private val preferences: SharedPreferences

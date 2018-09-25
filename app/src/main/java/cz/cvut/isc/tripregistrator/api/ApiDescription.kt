@@ -16,7 +16,7 @@ import retrofit2.http.POST
 interface ApiDescription {
 
 	@FormUrlEncoded
-	@POST("query.php")
+	@POST("api/trips")
 	fun ping(
 			@Field("username") username: String,
 			@Field("password") password: String,
@@ -24,7 +24,7 @@ interface ApiDescription {
 	): Completable
 
 	@FormUrlEncoded
-	@POST("query.php")
+	@POST("api/trips")
 	fun load(
 			@Field("username") username: String,
 			@Field("password") password: String,
@@ -33,7 +33,7 @@ interface ApiDescription {
 	): Single<Response>
 
 	@FormUrlEncoded
-	@POST("query.php")
+	@POST("api/trips")
 	fun register(
 			@Field("username") username: String,
 			@Field("password") password: String,
@@ -43,7 +43,7 @@ interface ApiDescription {
 	): Single<Response>
 
 	@FormUrlEncoded
-	@POST("query.php")
+	@POST("api/trips")
 	fun refresh(
 			@Field("username") username: String,
 			@Field("password") password: String,
@@ -52,7 +52,7 @@ interface ApiDescription {
 	): Single<Response>
 
 	@FormUrlEncoded
-	@POST("query.php")
+	@POST("api/trips")
 	fun trips(
 			@Field("username") username: String,
 			@Field("password") password: String,
@@ -60,7 +60,7 @@ interface ApiDescription {
 	): Single<List<Trip>>
 
 	@FormUrlEncoded
-	@POST("query.php")
+	@POST("api/trips")
 	fun test(
 			@Field("username") username: String,
 			@Field("password") password: String,

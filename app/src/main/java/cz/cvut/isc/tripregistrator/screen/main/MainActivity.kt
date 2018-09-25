@@ -22,7 +22,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.student_card.*
 
-class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEntryDialog.Callback {
+class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEntryDialog.Callback, SettingsDialog.Callback {
 
 	companion object {
 		const val RC_SCANNER = 1
@@ -134,6 +134,10 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEnt
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe {
 					when (it) {
+						is TripsState.Cleared -> {
+							trips_refresh.isRefreshing = false
+							tripsAdapter.trips = emptyList()
+						}
 						is TripsState.Loading -> {
 							trips_refresh.isRefreshing = true
 						}
@@ -187,6 +191,10 @@ class MainActivity : AppCompatActivity(), ConfirmationDialog.Callback, ManualEnt
 
 	override fun onConfirmation(esnCardNumber: String) {
 		viewModel.loadCardNumber(esnCardNumber)
+	}
+
+	override fun onSuccessfulConnection() {
+		viewModel.refreshTrips()
 	}
 
 }

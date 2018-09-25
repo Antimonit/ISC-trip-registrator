@@ -43,14 +43,14 @@ class ConfirmationDialog : DialogFragment() {
 
 			setMessage("$studentText\n$tripText")
 			setTitle(if (isRegistered) {
-				R.string.confirm_dialog_register_title
-			} else {
 				R.string.confirm_dialog_unregister_title
+			} else {
+				R.string.confirm_dialog_register_title
 			})
 			setPositiveButton(if (isRegistered) {
-				R.string.confirm_dialog_register_yes
-			} else {
 				R.string.confirm_dialog_unregister_yes
+			} else {
+				R.string.confirm_dialog_register_yes
 			}) { _, _ ->
 				val callback = activity as? Callback ?: targetFragment as? Callback
 				callback?.onConfirmation(trip, isRegistered)

@@ -40,6 +40,9 @@ class MainViewModel : ViewModel() {
 
 	fun clearUser() {
 		studentState.onNext(StudentState.Unknown)
+		tripsState.onNext(TripsState.Cleared)
+		student = null
+		refreshTrips()
 	}
 
 	fun loadCardNumber(queryCardNumber: String) {
@@ -76,7 +79,6 @@ class MainViewModel : ViewModel() {
 					t.printStackTrace()
 					tripsState.onNext(TripsState.Error(t.localizedMessage))
 				})
-
 	}
 
 	fun register(trip: Trip, isRegistered: Boolean) {
@@ -114,6 +116,7 @@ sealed class StudentState {
 }
 
 sealed class TripsState {
+	object Cleared : TripsState()
 	object Loading : TripsState()
 	class Loaded(val trips: List<Trip>): TripsState()
 	class Error(val message: String): TripsState()

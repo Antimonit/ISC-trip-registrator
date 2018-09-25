@@ -13,7 +13,6 @@ import cz.cvut.isc.tripregistrator.api.ApiInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.settings_dialog.view.*
-import retrofit2.HttpException
 
 /**
  * Settings dialog in which user can change server url, username and password and test the
@@ -68,7 +67,11 @@ class SettingsDialog : DialogFragment() {
 								settings_test_result.setTextColor(ContextCompat.getColor(context, R.color.green))
 								settings_test_result.text = context.getString(R.string.settings_dialog_success)
 								settings_test_button.isEnabled = false
-								postDelayed({ dismiss() }, 1000)
+								postDelayed({
+									val callback = activity as? Callback ?: targetFragment as? Callback
+									callback?.onSuccessfulConnection()
+									dismiss()
+								}, 1000)
 							}, { t ->
 								t.printStackTrace()
 								settings_test_result.setTextColor(ContextCompat.getColor(context, R.color.red))
@@ -79,6 +82,10 @@ class SettingsDialog : DialogFragment() {
 		}.create().apply {
 			setCancelable(true)
 		}
+	}
+
+	interface Callback {
+		fun onSuccessfulConnection()
 	}
 
 }
