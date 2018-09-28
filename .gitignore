@@ -65,6 +65,7 @@ fastlane/readme.md
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+/.idea/codeStyles/Project.xml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/

@@ -1,12 +1,13 @@
 package cz.cvut.isc.tripregistrator.screen.main
 
-import android.arch.lifecycle.ViewModel
 import cz.cvut.isc.tripregistrator.App
 import cz.cvut.isc.tripregistrator.PreferenceInteractor
 import cz.cvut.isc.tripregistrator.api.ApiInteractor
 import cz.cvut.isc.tripregistrator.model.Student
 import cz.cvut.isc.tripregistrator.model.Trip
+import cz.cvut.isc.tripregistrator.screen.base.BaseViewModel
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
@@ -14,7 +15,7 @@ import io.reactivex.subjects.BehaviorSubject
  * @author David Khol
  * @since 01.09.2018
  **/
-class MainViewModel : ViewModel() {
+class MainViewModel : BaseViewModel() {
 
 	private var preferences = PreferenceInteractor(App.context)
 	private var apiInteractor = ApiInteractor(preferences)
@@ -25,8 +26,9 @@ class MainViewModel : ViewModel() {
 
 	var student: Student? = null
 		private set
+
 	init {
-		observeStudentState().subscribe {
+		disposables += observeStudentState().subscribe {
 			student = if (it is StudentState.Loaded) { it.student } else { null }
 		}
 	}
@@ -46,7 +48,7 @@ class MainViewModel : ViewModel() {
 	}
 
 	fun loadCardNumber(queryCardNumber: String) {
-		apiInteractor.load(queryCardNumber)
+		disposables += apiInteractor.load(queryCardNumber)
 				.doOnSubscribe {
 					studentState.onNext(StudentState.Loading)
 				}
@@ -63,12 +65,14 @@ class MainViewModel : ViewModel() {
 
 	fun refreshTrips() {
 		val student = student
-		if (student == null) {
-			apiInteractor.trips()
-		} else {
-			apiInteractor.refresh(student.id)
-					.map { it.trips }
-		}
+		disposables += apiInteractor
+				.let {
+					if (student == null) {
+						it.trips()
+					} else {
+						it.refresh(student.id).map { it.trips }
+					}
+				}
 				.subscribeOn(Schedulers.io())
 				.doOnSubscribe {
 					tripsState.onNext(TripsState.Loading)
@@ -86,11 +90,14 @@ class MainViewModel : ViewModel() {
 		if (student == null) {
 			loadingTripState.onNext(LoadingTripState.None)
 		} else {
-			if (isRegistered) {
-				apiInteractor.unregister(student.id, trip.id)
-			} else {
-				apiInteractor.register(student.id, trip.id)
-			}
+			disposables += apiInteractor
+					.let {
+						if (isRegistered) {
+							it.unregister(student.id, trip.id)
+						} else {
+							it.register(student.id, trip.id)
+						}
+					}
 					.subscribeOn(Schedulers.io())
 					.doOnSubscribe {
 						loadingTripState.onNext(LoadingTripState.Loading(trip))

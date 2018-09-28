@@ -15,7 +15,6 @@ import cz.cvut.isc.tripregistrator.model.Trip
 class ConfirmationDialog : DialogFragment() {
 
 	companion object {
-
 		private const val KEY_TRIP = "trip"
 		private const val KEY_STUDENT = "student"
 		private const val KEY_IS_REGISTERED = "is_registered"

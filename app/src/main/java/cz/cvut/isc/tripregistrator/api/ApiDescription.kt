@@ -58,13 +58,4 @@ interface ApiDescription {
 			@Field("password") password: String,
 			@Field("action") action: String
 	): Single<List<Trip>>
-
-	@FormUrlEncoded
-	@POST("api/trips")
-	fun test(
-			@Field("username") username: String,
-			@Field("password") password: String,
-			@Field("action") action: String
-	): Single<Unit>
-
 }
